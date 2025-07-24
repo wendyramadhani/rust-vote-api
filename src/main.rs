@@ -6,7 +6,10 @@ mod db;
 mod models;
 use db::db::{AppState, init_db};
 mod services;
-use services::vote::{add_vote, get_votes};
+use services::{
+    category::{add_category, get_categories},
+    vote::{add_vote, get_votes, vote_down, vote_up},
+};
 
 #[get("/")]
 async fn root() -> impl Responder {
@@ -31,6 +34,10 @@ async fn main() -> std::io::Result<()> {
             .service(root)
             .service(get_votes)
             .service(add_vote)
+            .service(get_categories)
+            .service(add_category)
+            .service(vote_down)
+            .service(vote_up)
     })
     .bind(("127.0.0.1", 8080))?
     .run()
